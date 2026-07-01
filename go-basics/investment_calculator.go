@@ -54,10 +54,21 @@ func outputText(text string) {
 }
 
 //----
-func calculateFutureValue(investmentAmount, expectedReturnRate, years float64) (float64, float64) {
-	futureValue := investmentAmount * math.Pow(1+expectedReturnRate/100, years)
-	futureRealValue := futureValue / math.Pow(1+inflationRate/100,years)
+// func calculateFutureValue(investmentAmount, expectedReturnRate, years float64) (float64, float64) {
+// 	futureValue := investmentAmount * math.Pow(1+expectedReturnRate/100, years)
+// 	futureRealValue := futureValue / math.Pow(1+inflationRate/100,years)
 
-	return futureValue, futureRealValue
+// 	return futureValue, futureRealValue
+// }
+
+func calculateFutureValue(investmentAmount, expectedReturnRate, years float64) (fv float64, frv float64) {
+	fv = investmentAmount * math.Pow(1+expectedReturnRate/100, years)
+	frv = fv / math.Pow(1+inflationRate/100,years)
+	//You can return values like this
+	//return fv, frv -> better and clearer approach
+	//Alternative
+	return
 }
+
+
 
