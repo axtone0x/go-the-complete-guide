@@ -5,12 +5,25 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
 	"example.com/go-structs-practice-project/note"
+	"example.com/go-structs-practice-project/todo"
 )
+
+type saver interface {
+	Save() error
+}
+
 
 func main() {
 	title, content := getNoteData()
+	todoText := getUserInput("Todo text:")
+
+	todo, err := todo.New(todoText)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	n, err := note.New(title,content)
 
@@ -19,13 +32,35 @@ func main() {
 		return
 	}
 
-	n.Display()
-	err = n.Save()
+	todo.Display()
+	err = saveData(todo)
 
 	if err != nil {
-		fmt.Println("Saving the note failed.")
+		fmt.Println("Saving the todo failed.")
 		return
 	}
+
+	fmt.Println("Saving the todo succeeded!")
+
+	n.Display()
+	err = saveData(n)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}
+
+func saveData (data saver) error {
+	err := data.Save()
+
+	if err != nil {
+		fmt.Println("Saving failed.")
+		return err
+	}
+
+	fmt.Println("Saving succeeded!")
+	return nil
 }
 
 func getNoteData() (string, string) {
