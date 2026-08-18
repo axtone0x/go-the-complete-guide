@@ -17,8 +17,13 @@ type displayer interface {
 	Display()
 }
 
+// type outputtable interface {
+// 	Save() error
+// 	Display()
+// }
+
 type outputtable interface {
-	Save() error
+	saver
 	Display()
 }
 
@@ -40,37 +45,33 @@ func main() {
 		return
 	}
 
-	todo.Display()
-	err = saveData(todo)
-
-	if err != nil {
-		fmt.Println("Saving the todo failed.")
-		return
-	}
-
-	fmt.Println("Saving the todo succeeded!")
-
-	n.Display()
-	err = saveData(n)
+	err = outputData(todo)
 
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Saving the note succeeded!")
+	err = outputData(n)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
-func outputData(data outputtable) {
-	data.Display()
-	err := saveData(data)
+func printSomething(value any) {
+	typedValue, ok := value.(int) //Here we are asking if value is an int.
 
-	if err != nil {
-		fmt.Println(err)
-		return
+	if ok {
+		fmt.Print(typedValue + 1)
 	}
 
-	fmt.Println("Save succeeded!")
+}
+
+func outputData(data outputtable) error {
+	data.Display()
+	return saveData(data)
 }
 
 func saveData (data saver) error {
